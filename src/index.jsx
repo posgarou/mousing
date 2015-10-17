@@ -1,8 +1,8 @@
 import React from "react";
 
-var GameLogic = require("./game/game");
+var Game = require("./game/game");
 
-import Game from "./game/game.jsx";
+import GameView from "./game/game-view.jsx";
 import GameSettings from "./settings/settings.jsx";
 import Header from "./header/header.jsx";
 
@@ -40,7 +40,7 @@ const App = React.createClass({
 
   renderGame: function() {
     return (
-      <Game
+      <GameView
         restartGame={this.restartGame}
         game={this.state.game}
       />
@@ -48,7 +48,7 @@ const App = React.createClass({
   },
 
   startNewGame: function(settings) {
-    let game = new GameLogic(settings);
+    let game = new Game(settings);
 
     game.addListener('tick', this.onTick);
 

@@ -5,7 +5,7 @@ var _ = require("lodash");
 
 const CLASSES = require("./game.scss");
 
-var Game = require("./game");
+var GameLogic = require("./game");
 import Mouse from "./mouse";
 import Point from "./point";
 import SoundEffects from "./sound-effects";
@@ -15,9 +15,9 @@ import Cell from "./grid/cell/cell.jsx";
 
 import GameDashboard from "./dashboard/dashboard.jsx";
 
-const GameView = React.createClass({
+const Game = React.createClass({
   propTypes: {
-    game: React.PropTypes.instanceOf(Game).isRequired,
+    game: React.PropTypes.instanceOf(GameLogic).isRequired,
 
     restartGame: React.PropTypes.func.isRequired
   },
@@ -119,4 +119,4 @@ const GameView = React.createClass({
   }
 });
 
-export default GameView;
+export default Game;

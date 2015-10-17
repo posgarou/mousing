@@ -1,6 +1,6 @@
 import React from "react";
 
-var Game = require("./game/game");
+import Game from "./game/game";
 
 import GameView from "./game/game-view.jsx";
 import GameSettings from "./settings/settings.jsx";

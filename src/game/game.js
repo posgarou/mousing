@@ -49,10 +49,7 @@ class Game {
   }
 
   getAnEmptyLocation() {
-    let { height, width } = this.grid;
-    let proposal = new Point(_.random(width - 1), _.random(height - 1));
-
-    return this.grid.isEmpty(proposal) ? proposal : this.getAnEmptyLocation();
+    return this.grid.getAnEmptyLocation();
   }
 }
 

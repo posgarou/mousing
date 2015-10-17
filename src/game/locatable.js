@@ -1,7 +1,5 @@
 import Point from "./point";
 
-import OverlapAdjudicator from "./overlap-adjudicator";
-
 function coerceToPoint(point) {
   if (point instanceof Point) {
     return point;
@@ -17,10 +15,8 @@ class Locatable {
 
   moveTo(point) {
     var current = this.grid.objectAt(point.x, point.y);
-    console.debug("Current:", current);
 
     if (current) {
-      console.debug("Overlapping with", current);
       current.overlapWith(this);
     }
 
@@ -29,16 +25,6 @@ class Locatable {
 
   removeFromGrid(grid) {
     this.grid.remove(this);
-  }
-
-  motherMayI(point) {
-    if (this.grid.isInBounds(point)) {
-      var current = this.grid.objectAt(point.x, point.y);
-
-      return !current || (new OverlapAdjudicator(current, this)).canOverlap();
-    } else {
-      return false;
-    }
   }
 
   isAt(point) {

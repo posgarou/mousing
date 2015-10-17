@@ -78,18 +78,10 @@ const Game = React.createClass({
     );
   },
 
-  tryToMoveCat: function(x, y) {
-    let { cat } = this.props.game;
-    let currentLocation = cat.location;
-    let newLocation = Point.shift(cat.location, x, y);
+  tryToMoveCat: function(vector) {
+    let { grid, cat } = this.props.game;
 
-    console.debug(currentLocation);
-    console.debug(newLocation);
-
-    console.debug(cat.motherMayI(newLocation));
-
-    if (cat.motherMayI(newLocation)) {
-      cat.moveTo(newLocation);
+    if (grid.move(cat, vector)) {
       this.tick();
     } else {
       this.soundEffects.error();
@@ -104,9 +96,7 @@ const Game = React.createClass({
       "left": [-1, 0]
     }[handler.shortcut];
 
-    console.debug(handler.shortcut, vector);
-
-    this.tryToMoveCat(vector[0], vector[1]);
+    this.tryToMoveCat(vector);
   },
 
   onObjectRemoval: function(_event, object) {

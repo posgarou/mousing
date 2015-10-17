@@ -2,6 +2,8 @@ var _ = require("lodash");
 
 import Point from "./point";
 
+import OverlapAdjudicator from "./overlap-adjudicator";
+
 class Grid {
   constructor(game, w, h) {
     this.game = game;
@@ -25,8 +27,30 @@ class Grid {
     this.game.notify('remove', locatable);
   }
 
+  move(locatable, vector) {
+    let [x, y] = vector;
+    let proposedLocation = Point.shift(locatable.location, x, y);
+
+    if (this.canMove(locatable, proposedLocation)) {
+      locatable.moveTo(proposedLocation);
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  canMove(locatable, proposedLocation) {
+    if (this.isInBounds(proposedLocation)) {
+      let current = this.objectAt(proposedLocation);
+
+      return !current || (new OverlapAdjudicator(current, locatable)).canOverlap();
+    } else {
+      return false;
+    }
+  }
+
   objectAt(x, y) {
-    let point = new Point(x, y);
+    let point = (typeof y !== "undefined") ? new Point(x, y) : x;
 
     return _.find(this.objects, (object) => {
       return object.isAt(point);
@@ -39,6 +63,14 @@ class Grid {
 
   isInBounds(point) {
     return (point.x >= 0) && (point.y >= 0) && (point.x < this.width) && (point.y < this.height);
+  }
+
+  getAnEmptyLocation() {
+    let { height, width } = this;
+
+    let proposal = new Point(_.random(width - 1), _.random(height - 1));
+
+    return this.isEmpty(proposal) ? proposal : this.getAnEmptyLocation();
   }
 }
 

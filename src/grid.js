@@ -3,7 +3,9 @@ var _ = require("lodash");
 import Point from "./point";
 
 class Grid {
-  constructor(w, h) {
+  constructor(game, w, h) {
+    this.game = game;
+
     this.width = w;
     this.height = h;
 
@@ -12,10 +14,12 @@ class Grid {
 
   add(locatable) {
     this.objects.push(locatable);
+    this.game.notify('add', locatable);
   }
 
   remove(locatable) {
     _.remove(this.objects, locatable);
+    this.game.notify('remove', locatable);
   }
 
   objectAt(x, y) {

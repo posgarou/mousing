@@ -4,7 +4,9 @@ import keymaster from "keymaster";
 var _ = require("lodash");
 
 var Game = require("./game");
+import Mouse from "./mouse";
 import Point from "./point";
+import SoundEffects from "./sound-effects";
 
 var Row = require("./row");
 var Cell = require("./cell");
@@ -20,10 +22,13 @@ const App = React.createClass({
 
   componentDidMount: function() {
     keymaster("left, right, up, down", this.handleKeyPress);
+    this.state.game.addListener(this.receiveGameEvent);
+    this.soundEffects = new SoundEffects();
   },
 
   componentWillUnmount: function() {
     keymaster.unbind("left, right, up, down", this.handleKeyPress);
+    this.state.game.removeListener(this.receiveGameEvent);
   },
 
   render: function() {
@@ -69,6 +74,8 @@ const App = React.createClass({
     if (cat.motherMayI(newLocation)) {
       cat.moveTo(newLocation);
       this.setState({ game: this.state.game });
+    } else {
+      this.soundEffects.error();
     }
   },
 
@@ -83,6 +90,11 @@ const App = React.createClass({
     console.debug(handler.shortcut, vector);
 
     this.tryToMoveCat(vector[0], vector[1]);
+  },
+
+  receiveGameEvent: function(event, object) {
+    if (event === "remove" && object instanceof Mouse)
+      this.soundEffects.crunch();
   }
 });
 

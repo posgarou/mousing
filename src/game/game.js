@@ -50,6 +50,8 @@ class Game {
   }
 
   finish() {
+    this.moves += 1;
+
     this.notify('game-over', {
       won: true,
       moves: this.moves

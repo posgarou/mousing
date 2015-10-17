@@ -7,35 +7,41 @@ import Point from "./point";
 
 class Game {
   constructor() {
-    this.listeners = [];
+    this.listeners = {};
 
     this.grid = new Grid(this, 15, 10);
 
-    this.cat = new Cat(this.grid, this.getAnEmptyLocation());
+    this.cat = this.grid.add(new Cat(this.getAnEmptyLocation()));
 
     _.times(_.random(1, 4), () => {
-      new Mouse(this.grid, this.getAnEmptyLocation());
+      this.grid.add(new Mouse(this.getAnEmptyLocation()));
     });
 
     _.times(_.random(2, 12), () => {
-      new Obstruction(this.grid, this.getAnEmptyLocation());
+      this.grid.add(new Obstruction(this.getAnEmptyLocation()));
     });
   }
 
+  tick() {
+    this.notify('tick');
+  }
+
   notify(event, object) {
-    this.notifyListeners(event, object);
+    this.notifyListeners(event, object || {});
   }
 
-  addListener(cb) {
-    this.listeners.push(cb);
+  addListener(event, cb) {
+    this.listeners[event] = (this.listeners[event] || []).concat(cb);
   }
 
-  removeListener(cb) {
-    _.remove(this.listeners, cb);
+  removeListener(event, cb) {
+    _.remove(this.listeners[event], cb);
   }
 
   notifyListeners(event, object) {
-    this.listeners.forEach( (listener) => {
+    let eventListeners = this.listeners[event] || [];
+
+    eventListeners.forEach( (listener) => {
       listener(event, object);
     });
   }

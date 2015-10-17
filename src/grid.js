@@ -14,7 +14,10 @@ class Grid {
 
   add(locatable) {
     this.objects.push(locatable);
+    locatable.grid = this;
     this.game.notify('add', locatable);
+
+    return locatable;
   }
 
   remove(locatable) {

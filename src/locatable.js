@@ -11,8 +11,7 @@ function coerceToPoint(point) {
 }
 
 class Locatable {
-  constructor(grid, initialLocation) {
-    this.placeOnGrid(grid);
+  constructor(initialLocation) {
     this.location = coerceToPoint(initialLocation);
   }
 
@@ -26,11 +25,6 @@ class Locatable {
     }
 
     this.location = coerceToPoint(point);
-  }
-
-  placeOnGrid(grid) {
-    this.grid = grid;
-    this.grid.add(this);
   }
 
   removeFromGrid(grid) {

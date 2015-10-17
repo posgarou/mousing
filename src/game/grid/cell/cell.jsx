@@ -1,11 +1,11 @@
 import React from "react";
 
-import Point from "./point";
+import Point from "../../point";
 
-import Locatable from "./locatable";
-import Cat from "./cat";
-import Mouse from "./mouse";
-import Obstruction from "./obstruction";
+import Locatable from "../../locatable";
+import Cat from "../../cat";
+import Mouse from "../../mouse";
+import Obstruction from "../../obstruction";
 
 require("./cell.scss");
 

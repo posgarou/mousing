@@ -6,10 +6,12 @@ import Grid from "./grid";
 import Point from "./point";
 
 class Game {
-  constructor() {
+  constructor(settings={}) {
     this.listeners = {};
 
-    this.grid = new Grid(this, 15, 10);
+    let { height, width } = settings;
+
+    this.grid = new Grid(this, width || 15, height || 7);
 
     this.cat = this.grid.add(new Cat(this.getAnEmptyLocation()));
 

@@ -1,0 +1,36 @@
+@import "../mixins";
+
+:local .Settings {
+  @include content-box;
+
+  text-align: center;
+
+  input[type="number"] {
+    width: 3em;
+    margin: 0 0.3em;
+
+    border: 0 solid black;
+    border-width: 0 0 2px 0;
+
+    padding-left: 0.75em;
+
+    text-align: center;
+
+    font-weight: 700;
+
+    color: #555;
+
+    &:focus {
+      color: black;
+    }
+  }
+
+  button[type="submit"] {
+    @include primary-button;
+    @include button-showcase;
+  }
+}
+
+:local .Errors {
+  @include danger-box;
+}

@@ -3,15 +3,15 @@ import keymaster from "keymaster";
 
 var _ = require("lodash");
 
+const CLASSES = require("./game.scss");
+
 var GameLogic = require("./game");
 import Mouse from "./mouse";
 import Point from "./point";
 import SoundEffects from "./sound-effects";
 
-var Row = require("./row.jsx");
-var Cell = require("./cell.jsx");
-
-require("./app.scss");
+var Row = require("./grid/row.jsx");
+var Cell = require("./grid/cell/cell.jsx");
 
 const Game = React.createClass({
   propTypes: {
@@ -31,7 +31,8 @@ const Game = React.createClass({
 
   render: function() {
     return (
-      <section>
+      <section
+        className={CLASSES.Game}>
         {this.renderRows()}
       </section>
     );

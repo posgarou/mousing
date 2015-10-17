@@ -4,4 +4,4 @@ var app = express();
 
 app.use(express.static("dist"));
 
-app.listen(3333);
+app.listen(process.env.port || 3333);

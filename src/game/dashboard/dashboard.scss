@@ -1,0 +1,12 @@
+@import "../../mixins";
+
+:local .Dashboard {
+  @include callout-box;
+
+  text-align: center;
+
+  button[type="button"] {
+    @include primary-button;
+    @include button-showcase;
+  }
+}

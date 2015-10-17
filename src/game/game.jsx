@@ -10,22 +10,28 @@ import Mouse from "./mouse";
 import Point from "./point";
 import SoundEffects from "./sound-effects";
 
-var Row = require("./grid/row.jsx");
-var Cell = require("./grid/cell/cell.jsx");
+import Row from "./grid/row.jsx";
+import Cell from "./grid/cell/cell.jsx";
+
+import GameDashboard from "./dashboard/dashboard.jsx";
 
 const Game = React.createClass({
   propTypes: {
-    game: React.PropTypes.instanceOf(GameLogic).isRequired
+    game: React.PropTypes.instanceOf(GameLogic).isRequired,
+
+    restartGame: React.PropTypes.func.isRequired
   },
 
   componentDidMount: function() {
-    keymaster("left, right, up, down", this.handleKeyPress);
+    keymaster("left, right, up, down", "game-arrows", this.handleKeyPress);
+    keymaster.setScope("game-arrows");
+
     this.props.game.addListener("remove", this.onObjectRemoval);
     this.soundEffects = new SoundEffects();
   },
 
   componentWillUnmount: function() {
-    keymaster.unbind("left, right, up, down", this.handleKeyPress);
+    keymaster.deleteScope("game-arrows");
     this.props.game.removeListener("remove", this.onObjectRemoval);
   },
 
@@ -34,6 +40,8 @@ const Game = React.createClass({
       <section
         className={CLASSES.Game}>
         {this.renderRows()}
+
+        {this.renderDashboard()}
       </section>
     );
   },
@@ -62,6 +70,14 @@ const Game = React.createClass({
     );
   },
 
+  renderDashboard: function() {
+    return (
+      <GameDashboard
+        onRestart={this.props.restartGame}
+      />
+    );
+  },
+
   tryToMoveCat: function(x, y) {
     let { cat } = this.props.game;
     let currentLocation = cat.location;
@@ -69,6 +85,8 @@ const Game = React.createClass({
 
     console.debug(currentLocation);
     console.debug(newLocation);
+
+    console.debug(cat.motherMayI(newLocation));
 
     if (cat.motherMayI(newLocation)) {
       cat.moveTo(newLocation);

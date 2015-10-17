@@ -41,6 +41,7 @@ const App = React.createClass({
   renderGame: function() {
     return (
       <Game
+        restartGame={this.restartGame}
         game={this.state.game}
       />
     );
@@ -52,6 +53,10 @@ const App = React.createClass({
     game.addListener('tick', this.onTick);
 
     this.setState({ game: game });
+  },
+
+  restartGame: function() {
+    this.setState({ game: undefined });
   },
 
   onTick: function() {

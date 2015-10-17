@@ -9,31 +9,39 @@ function coerceToPoint(point) {
 }
 
 class Locatable {
-  constructor(initialLocation) {
+  constructor(game, initialLocation) {
+    this.game = game;
     this.location = coerceToPoint(initialLocation);
   }
 
+  emit(event, payload) {
+    this.game.fyi(this, event, payload);
+  }
+
   moveTo(point) {
-    var current = this.grid.objectAt(point.x, point.y);
+    let current = this.grid.objectAt(point);
 
     if (current) {
-      current.overlapWith(this);
+      current.beOverlappedBy(this);
+      this.overlap(current);
     }
 
     this.location = coerceToPoint(point);
-  }
-
-  removeFromGrid(grid) {
-    this.grid.remove(this);
   }
 
   isAt(point) {
     return this.location.equals(coerceToPoint(point));
   }
 
-  canOverlapWith(otherLocatable) {
+  canBeOverlappedBy(otherLocatable) {
     return false;
   }
+
+  beOverlappedBy() {
+    console.error("Abstract method.");
+  }
+
+  overlap() {}
 }
 
 export default Locatable;

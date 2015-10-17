@@ -24,7 +24,6 @@ class Grid {
 
   remove(locatable) {
     _.remove(this.objects, locatable);
-    this.game.notify('remove', locatable);
   }
 
   move(locatable, vector) {

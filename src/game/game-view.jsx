@@ -13,26 +13,22 @@ import SoundEffects from "./sound-effects";
 import Row from "./grid/row.jsx";
 import Cell from "./grid/cell/cell.jsx";
 
-import GameDashboard from "./dashboard/dashboard.jsx";
-
 const Game = React.createClass({
   propTypes: {
-    game: React.PropTypes.instanceOf(GameLogic).isRequired,
-
-    restartGame: React.PropTypes.func.isRequired
+    game: React.PropTypes.instanceOf(GameLogic).isRequired
   },
 
   componentDidMount: function() {
     keymaster("left, right, up, down", "game-arrows", this.handleKeyPress);
     keymaster.setScope("game-arrows");
 
-    this.props.game.addListener("remove", this.onObjectRemoval);
+    this.props.game.addListener("mouse-eaten", this.onMouseEaten);
     this.soundEffects = new SoundEffects();
   },
 
   componentWillUnmount: function() {
     keymaster.deleteScope("game-arrows");
-    this.props.game.removeListener("remove", this.onObjectRemoval);
+    this.props.game.removeListener("mouse-eaten", this.onMouseEaten);
   },
 
   render: function() {
@@ -40,8 +36,6 @@ const Game = React.createClass({
       <section
         className={CLASSES.Game}>
         {this.renderRows()}
-
-        {this.renderDashboard()}
       </section>
     );
   },
@@ -70,14 +64,6 @@ const Game = React.createClass({
     );
   },
 
-  renderDashboard: function() {
-    return (
-      <GameDashboard
-        onRestart={this.props.restartGame}
-      />
-    );
-  },
-
   tryToMoveCat: function(vector) {
     let { grid, cat } = this.props.game;
 
@@ -99,8 +85,9 @@ const Game = React.createClass({
     this.tryToMoveCat(vector);
   },
 
-  onObjectRemoval: function(_event, object) {
-    if (object instanceof Mouse)
+  onMouseEaten: function(event, _payload) {
+    console.debug("MOUSE EATEN", event, _payload);
+    if (event === "mouse-eaten")
       this.soundEffects.crunch();
   },
 

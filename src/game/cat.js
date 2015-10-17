@@ -3,22 +3,19 @@ import Locatable from "./locatable";
 import Mouse from "./mouse";
 
 class Cat extends Locatable {
-  constructor(initialLocation) {
-    super(initialLocation);
+  constructor(game, initialLocation) {
+    super(game, initialLocation);
     this.miceEaten = 0;
   }
 
-  canOverlapWith(otherLocatable) {
-    return (otherLocatable instanceof Mouse);
-  }
-
-  overlapWith(otherLocatable) {
+  overlap(otherLocatable) {
     if (otherLocatable instanceof Mouse)
       this.incrementMiceEaten();
   }
 
   incrementMiceEaten() {
     this.miceEaten += 1;
+    this.emit('mouse-eaten');
   }
 }
 

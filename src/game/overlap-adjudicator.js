@@ -5,7 +5,7 @@ class OverlapAdjudicator {
   }
 
   canOverlap() {
-    return this.stationary.canOverlapWith(this.moving) && this.moving.canOverlapWith(this.stationary);
+    return this.stationary.canBeOverlappedBy(this.moving);
   }
 }
 

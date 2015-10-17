@@ -3,13 +3,13 @@ import Locatable from "./locatable";
 import Cat from "./cat";
 
 class Mouse extends Locatable {
-  canOverlapWith(otherLocatable) {
+  canBeOverlappedBy(otherLocatable) {
     return (otherLocatable instanceof Cat);
   }
 
-  overlapWith(otherLocatable) {
+  beOverlappedBy(otherLocatable) {
     if (otherLocatable instanceof Cat)
-      this.removeFromGrid();
+      this.emit('mouse-dead');
   }
 }
 

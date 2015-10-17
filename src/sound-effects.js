@@ -5,11 +5,17 @@ const sounds = {
 
 class SoundEffects {
   error() {
-    sounds.error.play();
+    this.playSound(sounds.error);
   }
 
   crunch() {
-    sounds.crunch.play();
+    this.playSound(sounds.crunch);
+  }
+
+  playSound(sound) {
+    sound.pause();
+    sound.currentTime = 0;
+    sound.play();
   }
 }
 

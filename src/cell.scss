@@ -1,0 +1,28 @@
+@import "variables";
+
+.cell {
+  display: inline-block;
+
+  height: 40px;
+  width: 40px;
+
+  background: $main-color;
+
+  margin: 2px;
+
+  border: 2px solid darken($main-color, 10%);
+
+  &.impassible {
+    border-color: darken($main-color, 50%);
+    background-color: darken($main-color, 40%);
+  }
+
+  &.cat {
+    background-image: url(./img/cat.png);
+  }
+
+  &.mouse {
+    background-image: url(./img/mouse.png);
+    background-size: contain;
+  }
+}

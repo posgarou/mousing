@@ -13,7 +13,9 @@ class Game {
 
     this.cat = new Cat(this.grid, this.getAnEmptyLocation());
 
-    this.mouse = new Mouse(this.grid, this.getAnEmptyLocation());
+    _.times(_.random(1, 4), () => {
+      new Mouse(this.grid, this.getAnEmptyLocation());
+    });
 
     _.times(_.random(2, 12), () => {
       new Obstruction(this.grid, this.getAnEmptyLocation());

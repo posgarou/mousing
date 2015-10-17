@@ -3,6 +3,7 @@ import Mouse from "./mouse";
 import Obstruction from "./obstruction";
 
 import Grid from "./grid";
+import Point from "./point";
 
 class Game {
   constructor() {
@@ -10,14 +11,13 @@ class Game {
 
     this.grid = new Grid(this, 15, 10);
 
-    new Obstruction(this.grid, [2, 2]);
-    new Obstruction(this.grid, [2, 3]);
-    new Obstruction(this.grid, [3, 2]);
-    new Obstruction(this.grid, [3, 3]);
+    this.cat = new Cat(this.grid, this.getAnEmptyLocation());
 
-    this.cat = new Cat(this.grid, [1, 1]);
+    this.mouse = new Mouse(this.grid, this.getAnEmptyLocation());
 
-    this.mouse = new Mouse(this.grid, [4, 4]);
+    _.times(_.random(2, 12), () => {
+      new Obstruction(this.grid, this.getAnEmptyLocation());
+    });
   }
 
   notify(event, object) {
@@ -36,6 +36,13 @@ class Game {
     this.listeners.forEach( (listener) => {
       listener(event, object);
     });
+  }
+
+  getAnEmptyLocation() {
+    let { height, width } = this.grid;
+    let proposal = new Point(_.random(width - 1), _.random(height - 1));
+
+    return this.grid.isEmpty(proposal) ? proposal : this.getAnEmptyLocation();
   }
 }
 

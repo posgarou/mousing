@@ -1,5 +1,7 @@
 import Point from "./point";
 
+import _ from "lodash";
+
 class MouseMover {
   constructor(mouse, cat) {
     this.mouse = mouse;
@@ -8,18 +10,28 @@ class MouseMover {
 
   // May return undefined if there are no slots available
   pick() {
-    console.debug("PICKING LOCATION", this.mouse, this.cat, this.options());
-    return this.options()
-    .sort(this.rank.bind(this))
-    .shift();
+    let options = this.options();
+
+    if (options.length) {
+      let groupedOptions = _.groupBy(this.options(), this.rank.bind(this));
+
+      let furthestDistance = _.max(
+        _.keys(groupedOptions).map( (k) => parseFloat(k, 10) )
+      );
+
+      console.debug(groupedOptions, furthestDistance);
+
+      return _.shuffle(groupedOptions[furthestDistance]).shift();
+    }
   }
 
   options() {
     return this.mouse.grid.openSlotsNextTo(this.mouse.location);
   }
 
+  // higher is better
   rank(point) {
-    return 1.0 / point.distance(this.cat.location);
+    return point.distance(this.cat.location);
   }
 }
 

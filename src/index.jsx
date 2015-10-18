@@ -87,14 +87,14 @@ const App = React.createClass({
   startNewGame: function(settings) {
     let game = new Game(settings);
 
-    game.addListener('tick', this.onTick);
-    game.addListener('game-over', this.onGameOver);
+    game.channel.on('tick', this.onTick);
+    game.channel.on('game-over', this.onGameOver);
 
     this.setState({ game: game });
   },
 
   restartGame: function() {
-    this.unbindGameListeners();
+    this.state.game.channel.allOff();
 
     this.setState({
       game: undefined,
@@ -102,21 +102,12 @@ const App = React.createClass({
     });
   },
 
-  unbindGameListeners: function() {
-    let { game } = this.state;
-
-    game.removeListener('tick', this.onTick);
-    game.removeListener('game-over', this.onGameOver);
-  },
-
   onTick: function() {
     console.debug("ON TICK");
     this.forceUpdate();
   },
 
-  onGameOver: function(_event, finalStats) {
-    if (!finalStats) return;
-
+  onGameOver: function(finalStats) {
     if (finalStats.won) {
       this.soundEffects.purring();
     } else {

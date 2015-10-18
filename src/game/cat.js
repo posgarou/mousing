@@ -15,7 +15,7 @@ class Cat extends Locatable {
 
   incrementMiceEaten() {
     this.miceEaten += 1;
-    this.emit('mouse-eaten');
+    this.channel.emit('mouse-eaten', this);
   }
 }
 

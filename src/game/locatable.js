@@ -1,3 +1,5 @@
+import EventEmitter from "event-emitter";
+
 import Point from "./point";
 
 function coerceToPoint(point) {
@@ -12,10 +14,7 @@ class Locatable {
   constructor(game, initialLocation) {
     this.game = game;
     this.location = coerceToPoint(initialLocation);
-  }
-
-  emit(event, payload) {
-    this.game.fyi(this, event, payload);
+    this.channel = new EventEmitter();
   }
 
   moveTo(point) {

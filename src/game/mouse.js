@@ -9,7 +9,7 @@ class Mouse extends Locatable {
 
   beOverlappedBy(otherLocatable) {
     if (otherLocatable instanceof Cat)
-      this.emit('mouse-dead');
+      this.channel.emit('mouse-dead', this);
   }
 }
 

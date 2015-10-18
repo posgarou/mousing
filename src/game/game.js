@@ -24,9 +24,15 @@ class Game {
 
     this.cheese = this.place(Cheese);
 
-    this.mice = _.range(0, _.random(1, 4)).map( () => {
-      return this.place(Mouse);
-    });
+    this.cheese.channel.once("cheese-eaten", this.onCheeseEaten.bind(this));
+
+    this.mice = _.range(0, _.random(1, 4)).map(function() {
+      let mouse = this.place(Mouse);
+
+      mouse.channel.once("mouse-dead", this.onMouseDead.bind(this));
+
+      return mouse;
+    }.bind(this));
 
     _.times(_.random(2, 12), () => {
       this.place(Obstruction);
@@ -42,11 +48,17 @@ class Game {
     );
   }
 
-  removeMouse(mouse) {
+  onMouseDead(mouse) {
     this.grid.remove(mouse);
     _.remove(this.mice, mouse);
 
+    this.channel.emit("mouse-dead");
+
     if (!this.mice.length) this.finish();
+  }
+
+  onCheeseEaten() {
+    this.finish(false);
   }
 
   tick() {
@@ -69,16 +81,6 @@ class Game {
       won: won,
       moves: this.moves
     });
-  }
-
-  fyi(source, event, payload) {
-    console.debug("FYI", source, event, payload);
-    if (event === "mouse-dead")
-      this.removeMouse(source);
-    else if (event === "cheese-eaten")
-      this.finish(false);
-
-    this.channel.emit(event, payload);
   }
 
   getAnEmptyLocation() {

@@ -88,13 +88,13 @@ const App = React.createClass({
     let game = new Game(settings);
 
     game.channel.on('tick', this.onTick);
-    game.channel.on('game-over', this.onGameOver);
+    game.channel.once('game-over', this.onGameOver);
 
     this.setState({ game: game });
   },
 
   restartGame: function() {
-    this.state.game.channel.allOff();
+    this.state.game.channel.off('tick', this.onTick);
 
     this.setState({
       game: undefined,

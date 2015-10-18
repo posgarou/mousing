@@ -22,13 +22,13 @@ const Game = React.createClass({
     keymaster("left, right, up, down", "game-arrows", this.handleKeyPress);
     keymaster.setScope("game-arrows");
 
-    this.props.game.channel.on("mouse-eaten", this.onMouseEaten);
+    this.props.game.channel.on("mouse-dead", this.onMouseDead);
     this.soundEffects = new SoundEffects();
   },
 
   componentWillUnmount: function() {
     keymaster.deleteScope("game-arrows");
-    this.props.game.channel.off("mouse-eaten", this.onMouseEaten);
+    this.props.game.channel.off("mouse-dead", this.onMouseDead);
   },
 
   render: function() {
@@ -85,7 +85,7 @@ const Game = React.createClass({
     this.tryToMoveCat(vector);
   },
 
-  onMouseEaten: function(event, _payload) {
+  onMouseDead: function(event, _payload) {
     console.debug("MOUSE EATEN", event, _payload);
     this.soundEffects.crunch();
   },

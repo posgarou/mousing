@@ -17,6 +17,8 @@ class Locatable {
     this.channel = new EventEmitter();
   }
 
+  tick() {}
+
   moveTo(point) {
     let current = this.grid.objectAt(point);
 

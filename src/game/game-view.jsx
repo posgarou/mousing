@@ -19,15 +19,16 @@ const Game = React.createClass({
   },
 
   componentDidMount: function() {
-    keymaster("left, right, up, down", "game-arrows", this.handleKeyPress);
-    keymaster.setScope("game-arrows");
+    keymaster("left, right, up, down", "game-view", this.handleArrowKey);
+    keymaster("r", "game-view", this.handleRKey);
+    keymaster.setScope("game-view");
 
     this.props.game.channel.on("mouse-dead", this.onMouseDead);
     this.soundEffects = new SoundEffects();
   },
 
   componentWillUnmount: function() {
-    keymaster.deleteScope("game-arrows");
+    keymaster.deleteScope("game-view");
     this.props.game.channel.off("mouse-dead", this.onMouseDead);
   },
 
@@ -74,7 +75,7 @@ const Game = React.createClass({
     }
   },
 
-  handleKeyPress: function(e, handler) {
+  handleArrowKey: function(e, handler) {
     let vector = {
       "up": [0, -1],
       "down": [0, 1],
@@ -83,6 +84,15 @@ const Game = React.createClass({
     }[handler.shortcut];
 
     this.tryToMoveCat(vector);
+  },
+
+  handleRKey: function() {
+    let { cat } = this.props.game;
+
+    if (cat.roar())
+      this.soundEffects.roar();
+    else
+      this.soundEffects.error();
   },
 
   onMouseDead: function(event, _payload) {

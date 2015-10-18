@@ -22,6 +22,8 @@ class Game {
 
     this.cat = this.place(Cat);
 
+    this.cat.channel.on("cat-roar", this.onCatRoar.bind(this));
+
     this.cheese = this.place(Cheese);
 
     this.cheese.channel.once("cheese-eaten", this.onCheeseEaten.bind(this));
@@ -61,8 +63,14 @@ class Game {
     this.finish(false);
   }
 
+  onCatRoar() {
+    this.mice.forEach( mouse => mouse.terrify() );
+  }
+
   tick() {
     this.mice.forEach( (mouse) => {
+      if (!mouse.canMove()) return;
+
       let mover = new MouseMover(mouse, this.cat, this.cheese);
       let choice = mover.pick();
 
@@ -70,6 +78,10 @@ class Game {
     });
 
     this.moves += 1;
+
+    this.cat.tick();
+
+    this.mice.forEach( mouse => mouse.tick() );
 
     this.channel.emit('tick');
   }

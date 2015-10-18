@@ -3,6 +3,7 @@ const sounds = {
   crunch: new Audio(require("./sounds/crunch.mp3")),
   purring: new Audio(require("./sounds/purring.mp3")),
   mouseSqueak: new Audio(require("./sounds/mouse-squeak.mp3")),
+  roar: new Audio(require("./sounds/roar.mp3")),
 };
 
 class SoundEffects {
@@ -20,6 +21,10 @@ class SoundEffects {
 
   mouseSqueak() {
     this.playSound(sounds.mouseSqueak);
+  }
+
+  roar() {
+    this.playSound(sounds.roar);
   }
 
   playSound(sound) {

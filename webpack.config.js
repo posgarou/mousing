@@ -3,6 +3,8 @@ var path = require('path');
 var SRC_DIR = "./src";
 var DEST_DIR = "./dist";
 
+var ExtractTextPlugin = require("extract-text-webpack-plugin");
+
 module.exports = {
   entry: SRC_DIR + "/index.jsx",
 
@@ -25,8 +27,16 @@ module.exports = {
       },
 
       {
+        test: /\.css$/,
+        loader: ExtractTextPlugin.extract("style-loader", "css-loader")
+      },
+
+      {
         test: /\.scss$/,
-        loaders: ["style", "css", "autoprefixer", "sass"],
+        loader: ExtractTextPlugin.extract(
+          "style-loader",
+          "css-loader!autoprefixer-loader!sass-loader"
+        ),
         include: path.resolve(SRC_DIR)
       },
 
@@ -42,5 +52,9 @@ module.exports = {
   output: {
     path: DEST_DIR,
     filename: "index.js"
-  }
+  },
+
+  plugins: [
+    new ExtractTextPlugin("[name].css")
+  ]
 };

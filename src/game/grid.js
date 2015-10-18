@@ -30,6 +30,10 @@ class Grid {
     let [x, y] = vector;
     let proposedLocation = Point.shift(locatable.location, x, y);
 
+    return this.moveTo(locatable, proposedLocation);
+  }
+
+  moveTo(locatable, proposedLocation) {
     if (this.canMove(locatable, proposedLocation)) {
       locatable.moveTo(proposedLocation);
       return true;
@@ -54,6 +58,13 @@ class Grid {
     return _.find(this.objects, (object) => {
       return object.isAt(point);
     });
+  }
+
+  openSlotsNextTo(point) {
+    return Point.adjacentTo(point)
+    .filter( function(point) {
+      return this.isInBounds(point) && this.isEmpty(point);
+    }.bind(this) );
   }
 
   isEmpty(point) {

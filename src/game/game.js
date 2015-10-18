@@ -2,6 +2,8 @@ import Cat from "./cat";
 import Mouse from "./mouse";
 import Obstruction from "./obstruction";
 
+import MouseMover from "./mouse-mover";
+
 import Grid from "./grid";
 import Point from "./point";
 
@@ -45,6 +47,13 @@ class Game {
 
   tick() {
     this.moves += 1;
+
+    this.mice.forEach( (mouse) => {
+      let mover = new MouseMover(mouse, this.cat);
+      let choice = mover.pick();
+
+      if (choice) this.grid.moveTo(mouse, choice);
+    });
 
     this.notify('tick');
   }

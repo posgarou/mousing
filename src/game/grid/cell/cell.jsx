@@ -1,11 +1,7 @@
 import React from "react";
 
-import Point from "../../point";
-
 import Locatable from "../../locatable";
-import Cat from "../../cat";
-import Mouse from "../../mouse";
-import Obstruction from "../../obstruction";
+import Point from "../../point";
 
 require("./cell.scss");
 
@@ -20,14 +16,8 @@ const Cell = React.createClass({
 
     let klass = "cell";
 
-    if (object) {
-      if (object instanceof Cat)
-        klass += " cat";
-      else if (object instanceof Mouse)
-        klass += " mouse";
-      else if (object instanceof Obstruction)
-        klass += " impassible";
-    }
+    if (object)
+      klass += " " + object.constructor.name;
 
     return (
       <div

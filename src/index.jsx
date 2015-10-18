@@ -9,11 +9,17 @@ import GameDashboard from "./dashboard/dashboard.jsx";
 import FinalStats from "./final-stats/stats.jsx";
 import Header from "./header/header.jsx";
 
+import SoundEffects from "./game/sound-effects";
+
 require("./app.scss");
 
 const App = React.createClass({
   getInitialState: function() {
     return {};
+  },
+
+  componentDidMount: function() {
+    this.soundEffects = new SoundEffects();
   },
 
   componentWillUnmount: function() {
@@ -108,10 +114,17 @@ const App = React.createClass({
     this.forceUpdate();
   },
 
-  onGameOver: function(_event, payload) {
-    console.debug("ON GAME OVER");
+  onGameOver: function(_event, finalStats) {
+    if (!finalStats) return;
+
+    if (finalStats.won) {
+      this.soundEffects.purring();
+    } else {
+      this.soundEffects.mouseSqueak();
+    }
+
     this.setState({
-      finalStats: payload
+      finalStats: finalStats
     });
   }
 });

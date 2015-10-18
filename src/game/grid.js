@@ -60,10 +60,10 @@ class Grid {
     });
   }
 
-  openSlotsNextTo(point) {
-    return Point.adjacentTo(point)
+  validMovesFor(locatable) {
+    return Point.adjacentTo(locatable.location)
     .filter( function(point) {
-      return this.isInBounds(point) && this.isEmpty(point);
+      return this.isInBounds(point) && this.canMove(locatable, point);
     }.bind(this) );
   }
 

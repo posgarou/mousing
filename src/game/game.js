@@ -1,5 +1,6 @@
 import Cat from "./cat";
 import Mouse from "./mouse";
+import Cheese from "./cheese";
 import Obstruction from "./obstruction";
 
 import MouseMover from "./mouse-mover";
@@ -19,6 +20,7 @@ class Game {
 
     this.cat = this.place(Cat);
 
+    this.cheese = this.place(Cheese);
 
     this.mice = _.range(0, _.random(1, 4)).map( () => {
       return this.place(Mouse);
@@ -46,23 +48,23 @@ class Game {
   }
 
   tick() {
-    this.moves += 1;
-
     this.mice.forEach( (mouse) => {
-      let mover = new MouseMover(mouse, this.cat);
+      let mover = new MouseMover(mouse, this.cat, this.cheese);
       let choice = mover.pick();
 
       if (choice) this.grid.moveTo(mouse, choice);
     });
 
+    this.moves += 1;
+
     this.notify('tick');
   }
 
-  finish() {
+  finish(won=true) {
     this.moves += 1;
 
     this.notify('game-over', {
-      won: true,
+      won: won,
       moves: this.moves
     });
   }
@@ -71,6 +73,8 @@ class Game {
     console.debug("FYI", source, event, payload);
     if (event === "mouse-dead")
       this.removeMouse(source);
+    else if (event === "cheese-eaten")
+      this.finish(false);
 
     this.notify(event, payload);
   }
